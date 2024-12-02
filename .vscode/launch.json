@@ -5,6 +5,16 @@
     "version": "0.2.0",
     "configurations": [
         {
+            "type": "java",
+            "name": "Day2part2",
+            "request": "launch",
+            "mainClass": "Day2.Day2part2",
+            "projectName": "AdventOfCode2024_5c493348",
+            "jdkPath": "${env:JAVA_HOME}/bin",
+            "cwd": "${fileDirname}",
+            "startupClass": "${fileBasenameNoExtension}"
+        },
+        {
             "name": "Java",
             "type": "java",
             "request": "launch",
