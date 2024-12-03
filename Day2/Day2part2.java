@@ -11,33 +11,32 @@ public class Day2part2 {
     public static void main(String[] args) throws IOException {
 
         List<List<Integer>> reports = Utils.readArraysFromFile("Data.txt");
-        int result = part1(reports);
-        System.out.println("Result: " + result);
+        int result = part2(reports);
+        System.out.println("Result: " + result + "\n");
     }
 
-    public static int part1(List<List<Integer>> reports) {
+    public static int part2(List<List<Integer>> reports) {
+
 
         int result = 0;
-
         outerLoop: for (List<Integer> report : reports) {
-            
+
             List<Integer> sortedList = new ArrayList<>(report);
             List<Integer> reverseSortedList = new ArrayList<>(report);
 
             Collections.sort(sortedList);
             Collections.sort(reverseSortedList, Comparator.reverseOrder());
-            int count = 0;
             // 1 3 2 4 5
-            
+            int count = 0;
             if (!report.equals(sortedList) && !report.equals(reverseSortedList)) {
-                if(contarNumerosDesordenados(report) > 1){
+                if (!procesarLista(new ArrayList<>(report))) {
                     continue outerLoop;
-                }
+                } 
+                 count++;
             }
-
             for (int i = 1; i < sortedList.size(); i++) {
                 if ((sortedList.get(i) - sortedList.get(i - 1)) > 3 || sortedList.get(i) == sortedList.get(i - 1)) {
-                    if (count != 0) {
+                    if (count > 1) {
                         continue outerLoop;
                     } else {
                         count++;
@@ -46,36 +45,33 @@ public class Day2part2 {
                     }
                 }
             }
-            result++;
+            if(count <= 1){
+                result++;
+            }
         }
 
         return result;
     }
 
-    public static int contarNumerosDesordenados(List<Integer> reverseSortedList){
-
-        int len = reverseSortedList.size();
-        int result = 0;
-
-        //TODO Identificar si la lista esta ordenada acendientmente o decendientemente.
-
-
-        boolean ascOrDesc = true;
-        //Si esta hacendiente hacer esto
-        for (int i = 1; i < len; i++) {
-            if(ascOrDesc) {
-                if (reverseSortedList.get(i) > reverseSortedList.get(i-1)) {
-                    result++;
-                 }
-            } else {
-                if (reverseSortedList.get(i) < reverseSortedList.get(i-1)) {
-                    result++;
-                 }
-            }
-
+    public static boolean procesarLista(List<Integer> numeros) {
+        if (numeros.size() < 2) {
+            return true;
         }
 
+        boolean ascendente = numeros.get(0) < numeros.get(1);
+        int fueraOrdenCount = 0;
 
-        return result;
+        for (int i = 1; i < numeros.size(); i++) {
+            if ((ascendente && numeros.get(i) < numeros.get(i - 1)) ||
+                    (!ascendente && numeros.get(i) > numeros.get(i - 1))) {
+                fueraOrdenCount++;
+                if (fueraOrdenCount > 1) {
+                    return false;
+                }
+                numeros.remove(i);
+                i--;
+            }
+        }
+        return true;
     }
 }
