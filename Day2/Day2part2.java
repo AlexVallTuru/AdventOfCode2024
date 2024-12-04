@@ -2,8 +2,6 @@ package Day2;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
 import java.util.List;
 
 public class Day2part2 {
@@ -12,66 +10,54 @@ public class Day2part2 {
 
         List<List<Integer>> reports = Utils.readArraysFromFile("Data.txt");
         int result = part2(reports);
-        System.out.println("Result: " + result + "\n");
+        System.out.println("Result: " + result + " <------ \n");
     }
 
     public static int part2(List<List<Integer>> reports) {
 
-
         int result = 0;
-        outerLoop: for (List<Integer> report : reports) {
 
-            List<Integer> sortedList = new ArrayList<>(report);
-            List<Integer> reverseSortedList = new ArrayList<>(report);
-
-            Collections.sort(sortedList);
-            Collections.sort(reverseSortedList, Comparator.reverseOrder());
-            // 1 3 2 4 5
-            int count = 0;
-            if (!report.equals(sortedList) && !report.equals(reverseSortedList)) {
-                if (!procesarLista(new ArrayList<>(report))) {
-                    continue outerLoop;
-                } 
-                 count++;
-            }
-            for (int i = 1; i < sortedList.size(); i++) {
-                if ((sortedList.get(i) - sortedList.get(i - 1)) > 3 || sortedList.get(i) == sortedList.get(i - 1)) {
-                    if (count > 1) {
-                        continue outerLoop;
-                    } else {
-                        count++;
-                        sortedList.remove(i);
-                        i = 0;
-                    }
-                }
-            }
-            if(count <= 1){
+        for (List<Integer> report : reports) {
+            int err = isSafeDiff(report, 0);
+            if (err >= 2)
                 result++;
-            }
         }
-
         return result;
     }
 
-    public static boolean procesarLista(List<Integer> numeros) {
-        if (numeros.size() < 2) {
-            return true;
+    public static int isSafeDiff(List<Integer> report, int err) {
+        if (err >= 2) {
+            return err;
         }
 
-        boolean ascendente = numeros.get(0) < numeros.get(1);
-        int fueraOrdenCount = 0;
+        int len = report.size();
+        if (len < 2) {
+            return 0;
+        }
 
-        for (int i = 1; i < numeros.size(); i++) {
-            if ((ascendente && numeros.get(i) < numeros.get(i - 1)) ||
-                    (!ascendente && numeros.get(i) > numeros.get(i - 1))) {
-                fueraOrdenCount++;
-                if (fueraOrdenCount > 1) {
-                    return false;
-                }
-                numeros.remove(i);
-                i--;
+        boolean isIncreasing = true, isDecreasing = true;
+
+        for (int i = 1; i < len; i++) {
+            int diff = report.get(i) - report.get(i - 1);
+            if (Math.abs(diff) > 3 || diff == 0) {
+                List<Integer> reportClone = new ArrayList<>(report);
+                reportClone.remove(i);
+                err = isSafeDiff(reportClone, err + 1);
+                return err;
             }
+
+            if (diff > 0)
+                isDecreasing = false;
+            if (diff < 0)
+                isIncreasing = false;
         }
-        return true;
+
+        if (!isIncreasing && !isDecreasing) {
+            List<Integer> reportClone = new ArrayList<>(report);
+            reportClone.remove(0);
+            err = isSafeDiff(reportClone, err + 1);
+        }
+
+        return err;
     }
 }
