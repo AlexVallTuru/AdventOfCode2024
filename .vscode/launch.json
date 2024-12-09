@@ -6,6 +6,16 @@
     "configurations": [
         {
             "type": "java",
+            "name": "Day3part3",
+            "request": "launch",
+            "mainClass": "Day3.Day3part3",
+            "projectName": "AdventOfCode2024_5c493348",
+            "jdkPath": "${env:JAVA_HOME}/bin",
+            "cwd": "${fileDirname}",
+            "startupClass": "${fileBasenameNoExtension}"
+        },
+        {
+            "type": "java",
             "name": "Day2part2",
             "request": "launch",
             "mainClass": "Day2.Day2part2",
