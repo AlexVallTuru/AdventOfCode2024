@@ -20,14 +20,6 @@ public class Day4part1 {
             for (int j = 0; j < wordSearch[i].length; j++) {
 
                 if(wordSearch[i][j] == 'X'){
-                    //Miro si cap a la dreta el seguent caracter es 'M'
-                    //Miro si cap a la esquerra el seguent caracter es una 'M'
-                    //Miro si cap a baix el seguent caracter es una 'M'
-                    //Miro si cap a dalt el seguent caracter es una 'M'
-                    // Miro si la diagonal amunt dreta el seguent caracter es una 'M'
-                    // Miro si la diagonal amunt esquerra el seguent caracter es una 'M'
-                    // Miro si la diagonal abaix dreta el seguent caracter es una 'M'
-                    // Miro si la diagonal abaix esquerra el seguent caracter es una 'M'
                 }            
             
             }
