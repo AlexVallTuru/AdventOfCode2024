@@ -1,69 +1,55 @@
 // package Day5;
 
+import java.io.IOException;
 import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 public class Day5part1 {
 
     public static void main(String[] args) {
-
-        System.out.println("Hello LeetCoder!!");
-
-        Map<Integer, Integer> rules = new HashMap<>();
-        rules.put(47, 53);
-        rules.put(97, 13);
-        rules.put(97, 61);
-        rules.put(97, 47);
-        rules.put(75, 29);
-        rules.put(61, 13);
-        rules.put(75, 53);
-        rules.put(29, 13);
-        rules.put(97, 29);
-        rules.put(53, 29);
-        rules.put(61, 53);
-        rules.put(97, 53);
-        rules.put(61, 29);
-        rules.put(47, 13);
-        rules.put(75, 47);
-        rules.put(97, 75);
-        rules.put(47, 61);
-        rules.put(75, 61);
-        rules.put(47, 29);
-        rules.put(75, 13);
-        rules.put(53, 13);
-
-        // Inicializar las listas de números
-        List<List<Integer>> numsLists = new ArrayList<>();
-        numsLists.add(List.of(75, 47, 61, 53, 29));
-        numsLists.add(List.of(97, 61, 53, 29, 13));
-        numsLists.add(List.of(75, 29, 13));
-        numsLists.add(List.of(75, 97, 47, 61, 53));
-        numsLists.add(List.of(61, 13, 29));
-        numsLists.add(List.of(97, 13, 75, 29, 47));
-
-        for (List<Integer> nums : numsLists) {
-            boolean result = sorterAdventofCode(rules, nums);
-            System.out.println("Resultado para " + nums + ": " + result);
+        try {
+            int result = 0;
+            Map<Integer, Integer> rules = Utils.getOrder("Data.txt");
+            List<List<Integer>> numsLists = Utils.getNumsLists("Data.txt");
+            int count = 0;
+            for (List<Integer> nums : numsLists) {
+                boolean resultBool = sorterAdventofCode(rules, nums);
+                if (resultBool) {
+                    count++;
+                    if (nums.size() % 2 != 0) {
+                        int midd = nums.size() / 2;
+                        result += nums.get(midd);
+                    }
+                }
+            }
+            System.out.println("Resultado: " + result + "\n Contador: " + count);
+        } catch (IOException ex) {
+            ex.printStackTrace();
         }
     }
 
     public static boolean sorterAdventofCode(Map<Integer, Integer> rules, List<Integer> nums) {
-
         List<Integer> numsDels = new ArrayList<>(nums);
         int len = nums.size();
-        for (int i = len-1; i >= 0; i--) {
+        for (int i = 0; i < len; i++) {
             int actualNumber = nums.get(i);
-            List<Integer> keys = getKeysByValue(rules, actualNumber);
-            if(numsDels.containsAll(keys)) return false;
-            numsDels.remove(i);
+            Set<Integer> keys = getKeysByValue(rules, actualNumber);
+            for (Integer key : keys) {
+                if (numsDels.contains(key)) {
+                    return false;
+                }
+                if (numsDels.size() == 1) return true;
+            }
+            numsDels.remove(Integer.valueOf(actualNumber)); // Ensures that the value, not the index, is deleted
         }
-        return false;
+        return true;
     }
 
-    public static List<Integer> getKeysByValue(Map<Integer, Integer> map, Integer value) {
-        List<Integer> keys = new ArrayList<>();
+    public static Set<Integer> getKeysByValue(Map<Integer, Integer> map, Integer value) {
+        Set<Integer> keys = new LinkedHashSet<>();
         for (Map.Entry<Integer, Integer> entry : map.entrySet()) {
             if (entry.getValue().equals(value)) {
                 keys.add(entry.getKey());

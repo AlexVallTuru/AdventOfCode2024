@@ -7,7 +7,7 @@ public class Day4part1 {
     public static void main(String[] args) {
         Day4part1 d = new Day4part1();
         try {
-            char[][] wordSearch = Utils.getMatrix("Data.txt");
+            char[][] wordSearch = Utils.geMatrix("Data.txt");
             d.wordSearcher(wordSearch);
         } catch (IOException e) {
             e.printStackTrace();
