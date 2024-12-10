@@ -1,4 +1,4 @@
-// package Day3;
+package Day3;
 
 import java.util.regex.Pattern;
 import java.io.IOException;

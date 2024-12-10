@@ -1,4 +1,4 @@
-package Day3;
+// package Day3;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
@@ -8,7 +8,7 @@ import java.util.List;
 
 public class Utils {
 
-    public static List<String> readArraysFromFile(String fileName) throws IOException {
+    public static char[][] getMatrix(String fileName) throws IOException {
         List<String> lines = new ArrayList<>();
 
         try (BufferedReader reader = new BufferedReader(new FileReader(fileName))) {
@@ -18,6 +18,14 @@ public class Utils {
             }
         }
 
-        return lines;
+        int numRows = lines.size();
+        int numCols = lines.get(0).length();
+        char[][] wordSearch = new char[numRows][numCols];
+
+        for (int i = 0; i < numRows; i++) {
+            wordSearch[i] = lines.get(i).toCharArray();
+        }
+
+        return wordSearch;
     }
 }
